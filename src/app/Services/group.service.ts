@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GroupsMember } from '../Models/groups.model';
 import { Message } from '../Models/message.model';
+import { environment } from '../../environments/environment';
 
 export interface Group {
   id: number;
@@ -16,8 +17,8 @@ export interface Group {
 
 
 export class GroupService {
-  private apiUrl = 'http://localhost:5191/api/Groups'; // Backend API URL
-
+  //private apiUrl = 'http://localhost:5191/api/Groups'; // Backend API URL
+   private apiUrl = environment.apiBaseUrl;
   constructor(private http: HttpClient) { }
 
   createGroup(formData: FormData) {

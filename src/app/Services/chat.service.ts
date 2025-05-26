@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Message } from '../Models/message.model';
 import { User } from '../Models/user.model';
 import { AuthService } from '../Services/auth.service';
+import { environment } from '../../environments/environment';
 export interface GroupMessage {
   id?: number;
   senderEmail: string;
@@ -17,6 +18,7 @@ export interface GroupMessage {
 })
 
 export class ChatService {
+     private apiUrl = environment.apiBaseUrlHub;
   private hubConnection: signalR.HubConnection;
   private messageReceived = new Subject<Message>();
 
@@ -40,7 +42,7 @@ export class ChatService {
 
   constructor(private authService: AuthService) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5191/chatHub', {
+      .withUrl(this.apiUrl, {
         accessTokenFactory: () => this.authService.getToken() || ''
       })
       .withAutomaticReconnect()

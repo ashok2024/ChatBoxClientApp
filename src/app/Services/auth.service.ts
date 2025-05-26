@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 interface LoginResponse {
   token: string;
@@ -43,7 +44,7 @@ export interface Group {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5191/api'; // Backend API URL
+  private apiUrl = environment.apiBaseUrl;
   private tokenKey = 'jwtToken';
   private currentUserEmailSource = new BehaviorSubject<string | null>(null);
   private currentUserDisplayNameSource = new BehaviorSubject<string | null>(null);

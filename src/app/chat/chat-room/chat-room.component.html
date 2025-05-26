@@ -1,0 +1,102 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <span class="toolbar-title">Chat Room</span>
+  <span class="toolbar-spacer"></span>
+  <div *ngIf="currentUserDisplayName" style="color: black;">
+    Welcome, {{ currentUserDisplayName }}
+  </div>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="main-chat-layout">
+  <mat-card class="sidebar mat-elevation-z2">
+    <mat-nav-list>
+      <button mat-raised-button color="primary" (click)="openCreateGroupDialog()">
+        Create Group
+      </button>
+      <h3 mat-subheader>Online Users</h3>
+      <mat-list-item *ngFor="let user of onlineUsers" (click)="selectUser(user)"
+        [ngClass]="{'selected-user': selectedUser?.email === user.email}">
+        <div class="user-entry">
+          <div class="profile-image-wrapper" [ngClass]="{'online': user.isOnline}">
+            <img *ngIf="user?.profileImageUrl" [src]="user?.profileImageUrl" alt="Profile Image" />
+          </div>
+          <div mat-line>{{ user.displayName }}</div>
+        </div>
+
+        <!-- <div mat-line class="email-small">{{ user.email }}</div> -->
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item *ngFor="let group of groups" (click)="selectGroup(group)"
+        [ngClass]="{'selected-user': selectedGroupMember?.id === group.id}">
+        <div class="user-entry">
+          <div class="profile-image-wrapper">
+            <img *ngIf="group?.imagePath" [src]="group?.imagePath" alt="Profile Image" />
+          </div>
+
+          <div mat-line>{{ group.groupName }}</div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-card>
+
+  <mat-card class="chat-container mat-elevation-z2">
+    <div class="chat-header" *ngIf="selectedUser ||  selectedGroupMember">
+      <div class="selected-user-image-wrapper">
+        <img [src]="selectedUser?.profileImageUrl || selectedGroupMember?.imagePath" />
+      </div>
+      <h2>
+        {{ selectedUser ? selectedUser.displayName : '' }}
+      </h2>
+      <!-- <p *ngIf="selectedUser" class="selected-user-email">
+        {{ selectedUser.email }} <span *ngIf="!selectedUser.isOnline" class="offline-status">(Offline)</span>
+      </p> -->
+    </div>
+
+    <div class="message-list" #messageList>
+      <div *ngIf="selectedUser">
+        <div *ngFor="let m of messages" class="message-wrapper"
+          [ngClass]="m.senderEmail === currentUserEmail ? 'my-message' : 'other-message'">
+
+          <mat-chip color="primary" selected class="avatar-chip">
+            {{ m.senderDisplayName ? m.senderDisplayName[0] : '?' | uppercase }}
+          </mat-chip>
+
+          <div class="message-bubble">
+
+            <div class="message-content">
+              <div class="text">{{ m.text }}</div>
+              <div class="timestamp">{{ m.sentAt | date:'shortTime' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedGroupMember" >
+        <div *ngFor="let m of groupMessages"  class="message-wrapper"
+          [ngClass]="m.senderEmail === currentUserEmail ? 'my-message' : 'other-message'">
+          <mat-chip color="primary" selected class="avatar-chip">
+            {{ m.senderDisplayName ? m.senderDisplayName[0] : '?' | uppercase }}
+          </mat-chip>
+          <div class="message-bubble">
+            <div class="message-content">
+              <div class="text">{{ m.text }}</div>
+              <div class="timestamp">{{ m.sentAt | date:'shortTime' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="input-container" *ngIf="selectedUser || selectedGroupMember">
+      <mat-form-field appearance="outline" class="message-input">
+        <input matInput placeholder="Type a message" [(ngModel)]="newMsg" (keyup.enter)="send()" />
+      </mat-form-field>
+      <button mat-fab color="accent" (click)="send()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>

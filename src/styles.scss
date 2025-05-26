@@ -1,0 +1,33 @@
+
+/* You can add global styles below this point, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.login-container, .register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.login-card, .register-card {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.m-t-30 {
+  margin-top: 30px;
+}
+
+button.full-width {
+  margin-top: 20px;
+}

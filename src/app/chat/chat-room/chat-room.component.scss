@@ -1,0 +1,313 @@
+
+
+
+
+// /* src/app/chat/chat.component.scss */
+// @use '@angular/material' as mat;
+
+// // Define your Material theme palettes here, or ensure they are imported from styles.scss
+// // Example (replace with your actual palette definitions if not in styles.scss):
+// $my-primary: mat.define-palette(mat.$indigo-palette);
+// $my-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+// $my-warn: mat.define-palette(mat.$red-palette);
+
+// Basic Layout
+.main-chat-layout {
+  display: flex;
+  height: calc(100vh - 64px); // Adjust based on your toolbar height
+  background-color: #f8f9fa; // Light background for the overall chat area
+}
+
+.sidebar {
+  flex: 0 0 250px; // Fixed width sidebar
+  margin: 10px;
+  padding: 0; // Remove default card padding for nav-list
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px; // Rounded corners for card
+}
+
+.sidebar mat-nav-list {
+  flex-grow: 1;
+}
+
+.user-entry {
+  display: flex;
+  align-items: center; // Vertically align icon and name
+  .mat-icon {
+    margin-right: 10px; // Space between icon and name
+  }
+}
+
+.chat-container {
+  flex-grow: 1;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 8px; // Rounded corners for card
+  overflow: hidden; // Ensure content stays within rounded corners
+}
+
+.chat-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  background-color: #f5f5f5;
+  h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+  }
+  .selected-user-email {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+  }
+  .offline-status {
+    // color: mat.get-color-from-palette($my-warn, 500);
+    font-weight: bold;
+  }
+}
+
+// MESSAGE LIST STYLING
+.message-list {
+   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message-wrapper {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px; 
+}
+.avatar-chip {
+  margin: 0 8px;
+}
+.avatar-chip {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+  flex-shrink: 0; // Prevent chip from shrinking
+  text-transform: uppercase;
+  // Material chip's background and color will come from 'color="primary" selected'
+  // But we can override it if needed.
+  .mat-chip-list-wrapper & { // Target the actual chip element
+    height: 36px; // Ensure proper height
+    min-height: 36px;
+    padding: 0; // Remove internal chip padding
+  }
+  .mat-mdc-chip-text-content { // Target the text content inside the chip
+    line-height: 36px; // Center text vertically
+    padding: 0;
+  }
+}
+
+.message-bubble {
+   background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sender-info {
+ font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message-content {
+  color: #333;
+  display: flex; // To place text and timestamp on the same line if space allows
+  flex-wrap: wrap; // Allow wrapping if message is long
+  justify-content: space-between; // Push timestamp to right
+  align-items: flex-end; // Align timestamp to bottom if text wraps
+}
+
+.message-content .text {
+  flex-grow: 1;
+  margin-right: 8px; // Space between text and timestamp
+}
+.timestamp {
+  font-size: 0.8em;
+  color: gray;
+  margin-top: 5px;
+}
+.message-content .timestamp {
+  font-size: 10px;
+  color: #888;
+  white-space: nowrap; // Keep timestamp on one line
+  flex-shrink: 0; // Prevent timestamp from shrinking
+}
+.my-message {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+// ======================================================
+// MY MESSAGES (Current User) - RIGHT ALIGNED, GREEN
+// ======================================================
+.message-wrapper.my-message {
+   align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-wrapper.my-message .avatar-chip {
+  margin-left: 8px; // Space between avatar and bubble
+  //background-color: mat.get-color-from-palette($my-primary, 500) !important; // Custom color for avatar
+  color: white !important;
+}
+.my-message .message-bubble {
+  background-color: #d1e7dd;
+}
+
+.message-wrapper.my-message .message-bubble {
+  background-color: #8BC34A; // Green, similar to image_c43d46.png
+  color: #333;
+  // Border radius adjustments for the 'tail' effect (right side)
+  border-bottom-right-radius: 4px; // Smaller radius for the tail
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.message-wrapper.my-message .sender-info {
+  color: #388E3C; // Darker green for sender name
+}
+
+// ======================================================
+// OTHER MESSAGES (Received) - LEFT ALIGNED, BLUE
+// ======================================================
+.message-wrapper.other-message {
+  align-self: flex-start;
+  flex-direction: row;
+}
+.other-message {
+  align-self: flex-start;
+  flex-direction: row;
+  text-align: left;
+}
+.message-wrapper.other-message .avatar-chip {
+  margin-right: 8px; // Space between avatar and bubble
+  //background-color: mat.get-color-from-palette($my-accent, 500) !important; // Custom color for avatar
+  color: white !important;
+}
+
+.message-wrapper.other-message .message-bubble {
+  background-color: #BBDEFB; // Light blue, similar to image_c43d46.png
+  color: #333;
+  // Border radius adjustments for the 'tail' effect (left side)
+  border-bottom-left-radius: 4px; // Smaller radius for the tail
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.message-wrapper.other-message .sender-info {
+  color: #1976D2; // Darker blue for sender name
+}
+
+
+// Input container
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+  background-color: #fff;
+}
+
+.message-input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+// Sidebar & Toolbar styling (from previous versions, keep for consistency)
+.email-small {
+  font-size: 0.8em;
+  color: #888;
+}
+
+.selected-user {
+  background-color: #e0e0e0; // Highlight selected user
+}
+
+.app-toolbar {
+  height: 64px;
+  min-height: 64px;
+  .toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+  div {
+    font-size: 0.9em;
+    margin-right: 15px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+.user-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+mat-icon {
+  font-size: 20px;
+  color: black;
+}
+.profile-image-wrapper {
+  position: relative;
+  width: 40px; /* adjust size */
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid transparent; /* default border */
+  display: inline-block;
+}
+
+.profile-image-wrapper.online {
+  border-color: #4caf50; /* green border for online */
+}
+
+.profile-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+.chat-header {
+  text-align: center;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-user-image-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 8px auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.selected-user-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
